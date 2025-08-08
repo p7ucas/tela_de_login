@@ -33,7 +33,6 @@
     </style>
 </head>
 <body>
-    <h1>Home Page</h1>
     <div class="box">
         <a href="login.php">Login</a>
         <a href="formulario.php">Cadastre-se</a>

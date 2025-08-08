@@ -23,6 +23,7 @@
 
         $nome = $_POST["nome"];
         $cpf = $_POST["cpf"];
+        $senha = $_POST["senha"];
         $telefone = $_POST["telefone"];
         $sexo = $_POST["genero"];
         $data_nasc = $_POST["data_nascimento"];
@@ -30,8 +31,8 @@
         $estado = $_POST["estado"];
         $endereco = $_POST["endereco"];
 
-        $result = mysqli_query($conexao, "INSERT INTO usuarios(nome,cpf,telefone,sexo,data_nasc,cidade,estado,endereco)
-        VALUES('$nome','$cpf','$telefone','$sexo','$data_nasc','$cidade','$estado','$endereco')");
+        $result = mysqli_query($conexao, "INSERT INTO usuarios(nome,cpf,senha,telefone,sexo,data_nasc,cidade,estado,endereco)
+        VALUES('$nome','$cpf','$senha','$telefone','$sexo','$data_nasc','$cidade','$estado','$endereco')");
     }
 
 

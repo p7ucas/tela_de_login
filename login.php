@@ -46,10 +46,10 @@
     <a href="home.php">Voltar</a>
     <div>
         <h1>Login</h1>
-        <form action="_testLogin.php" method="POST">
-            <input type="text" placeholder="CPF">
+        <form action="_testLogin.php"method="POST">
+            <input type="text" name="cpf" placeholder="CPF">
             <br><br>
-            <input type="text" placeholder="Senha">
+            <input type="text" name="senha" placeholder="Senha">
             <br><br>
             <input class="inputSubmit" type="submit" name="submit" value="Enviar">
         </form>
