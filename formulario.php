@@ -58,7 +58,7 @@
             background-color: rgba(0, 0, 0, 0.6);
             padding: 15px;
             border-radius: 15px;
-            width: 50%;
+            width: 30%;
         }
         fieldset{
             border: 3px solid dodgerblue;
