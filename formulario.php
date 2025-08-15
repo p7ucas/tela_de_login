@@ -1,28 +1,56 @@
 <?php
 
-    if(isset($_POST["submit"])) {
-        /*
-        print_r('Nome: '. $_POST['nome']);
-        print_r('<br>');
-        print_r('CPF: '. $_POST['cpf']);
-        print_r('<br>');
-        print_r('Telefone: '. $_POST['telefone']);
-        print_r('<br>');
-        print_r('Sexo: '. $_POST['genero']);
-        print_r('<br>');
-        print_r('Data de nascimento: '. $_POST['data_nascimento']);
-        print_r('<br>');
-        print_r('Cidade: '. $_POST['cidade']);
-        print_r('<br>');
-        print_r('Estado: '. $_POST['estado']);
-        print_r('<br>');
-        print_r('Endereço: '. $_POST['endereco']);
-        */
+function validaCPF($cpf)
+{
+    $cpf = preg_replace('/[^0-9]/is', '', $cpf);
 
-        include_once("_config.php");
+    if (strlen($cpf) != 11) {
+        return false;
+    }
+
+    if (preg_match('/(\d)\1{10}/', $cpf)) {
+        return false;
+    }
+
+    for ($t = 9; $t < 11; $t++) {
+        for ($d = 0, $c = 0; $c < $t; $c++) {
+            $d += $cpf[$c] * (($t + 1) - $c);
+        }
+        $d = ((10 * $d) % 11) % 10;
+        if ($cpf[$c] != $d) {
+            return false;
+        }
+    }
+    return true;
+}
+if (isset($_POST["submit"])) {
+    /*
+    print_r('Nome: '. $_POST['nome']);
+    print_r('<br>');
+    print_r('CPF: '. $_POST['cpf']);
+    print_r('<br>');
+    print_r('Telefone: '. $_POST['telefone']);
+    print_r('<br>');
+    print_r('Sexo: '. $_POST['genero']);
+    print_r('<br>');
+    print_r('Data de nascimento: '. $_POST['data_nascimento']);
+    print_r('<br>');
+    print_r('Cidade: '. $_POST['cidade']);
+    print_r('<br>');
+    print_r('Estado: '. $_POST['estado']);
+    print_r('<br>');
+    print_r('Endereço: '. $_POST['endereco']);
+    */
+
+    include_once("_config.php");
+
+    $cpf = $_POST["cpf"];
+
+    if (validaCPF($cpf) == false) {
+        echo "CPF inválido!";
+    } else {
 
         $nome = $_POST["nome"];
-        $cpf = $_POST["cpf"];
         $senha = $_POST["senha"];
         $telefone = $_POST["telefone"];
         $sexo = $_POST["genero"];
@@ -34,153 +62,111 @@
         $result = mysqli_query($conexao, "INSERT INTO usuarios(nome,cpf,senha,telefone,sexo,data_nasc,cidade,estado,endereco)
         VALUES('$nome','$cpf','$senha','$telefone','$sexo','$data_nasc','$cidade','$estado','$endereco')");
     }
+}
 
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulário</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body{
-            font-family: Arial, Helvetica, sans-serif;
-            background-image: linear-gradient(to right, rgb(20, 147, 220), rgb(17, 54, 71));
-        }
-        .box{
+        /* Você pode manter ou adaptar seu CSS customizado aqui */
+        body {
+            background: linear-gradient(to right, rgb(20, 147, 220), rgb(17, 54, 71));
             color: white;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 15px;
-            border-radius: 15px;
-            width: 30%;
         }
-        fieldset{
-            border: 3px solid dodgerblue;
-        }
-        legend{
-            border: 1px solid dodgerblue;
-            padding: 10px;
-            text-align: center;
-            background-color: dodgerblue;
-            border-radius: 8px;
-        }
-        .inputBox{
-            position: relative;
-        }
-        .inputUser{
-            background: none;
-            border: none;
-            border-bottom: 1px solid white;
-            outline: none;
-            color: white;
-            font-size: 15px;
-            width: 100%;
-            letter-spacing: 2px;
-        }
-        .labelInput{
-            position:absolute;
-            top: 0px;
-            left: 0px;
-            pointer-events: none;
-            transition: .5px;
-        }
-        .inputUser:focus ~ .labelInput,
-        .inputUser:valid ~ .labelInput{
-            top: -20px;
-            font-size: 12px;
-            color: dodgerblue;
-            
-        }
-        #data_nascimento{
-            border: none;
-            padding: 8px;
-            border-radius: 10px;
-            outline: none;
-            font-size: 15px;
-        }
-        #submit{
-            background-image: linear-gradient(to right, rgb(0, 92, 197), rgb(90, 20, 220));
-            width: 100%;
-            border: none;
-            padding: 15px;
-            color: white;
-            font-size: 15px;
-            cursor: pointer;
-            border-radius: 10px;
-        }
-        #submit:hover{
-            background-image: linear-gradient(to right, rgb(0, 80, 172), rgb(80, 19, 195));
+
+        .login-box {
+            margin-top: 100px;
         }
     </style>
 </head>
+
 <body>
-    <a href="home.php">Voltar</a>
-    <div class="box">
-        <form action="formulario.php" method="POST">
-            <fieldset>
-                <legend><b>Formulário de Clientes</b></legend>
-                <br>
-                <div class="inputBox">
-                    <input type="text" name="nome" id="nome" class="inputUser" required>
-                    <label for="nome" class="labelInput">Nome Completo</label>
+    <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-7">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-header text-center border-0 bg-transparent pt-4">
+                        <h3 class="fw-bold">Formulário de Clientes</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="formulario.php" method="POST">
+                            <div class="mb-3">
+                                <label for="nome" class="form-label">Nome Completo</label>
+                                <input type="text" name="nome" id="nome" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="senha" class="form-label">Senha</label>
+                                <input type="password" name="senha" id="senha" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="cpf" class="form-label">CPF</label>
+                                <input type="text" name="cpf" id="cpf" class="form-control" maxlength="14" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="telefone" class="form-label">Telefone</label>
+                                <input type="tel" name="telefone" id="telefone" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Sexo:</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="genero" id="feminino"
+                                        value="feminino" required>
+                                    <label class="form-check-label" for="feminino">Feminino</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="genero" id="masculino"
+                                        value="masculino" required>
+                                    <label class="form-check-label" for="masculino">Masculino</label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="data_nascimento" class="form-label"><b>Data de Nascimento:</b></label>
+                                <input type="date" name="data_nascimento" id="data_nascimento" class="form-control"
+                                    required>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="cidade" class="form-label">Cidade</label>
+                                    <input type="text" name="cidade" id="cidade" class="form-control" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="estado" class="form-label">Estado</label>
+                                    <input type="text" name="estado" id="estado" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="endereco" class="form-label">Endereço</label>
+                                <input type="text" name="endereco" id="endereco" class="form-control" required>
+                            </div>
+
+                            <div class="d-grid">
+                                <input type="submit" name="submit" id="submit" class="btn btn-primary btn-lg"
+                                    value="Cadastrar">
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <a href="home.php" class="text-white-50">Voltar</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <br><br>
-                <div class="inputBox">
-                    <input type="password" name="senha" id="senha" class="inputUser" required>
-                    <label for="senha" class="labelInput">Senha</label>
-                </div>
-                <br><br>
-                <div class="inputBox">
-                    <input
-                    type="text"
-                    name="cpf"
-                    id="cpf"
-                    class="inputUser"
-                    maxlength="14"
-                    inputmode="numeric"
-                    required>
-                    <label for="cpf" class="labelInput">CPF</label>
-                </div>
-                <br><br>
-                <div class="inputBox">
-                    <input type="tel" name="telefone" id="telefone" class="inputUser" required>
-                    <label for="telefone" class="labelInput">Telefone</label>
-                </div>
-                <p>Sexo:</p>
-                <input type="radio" name="genero" id="feminino" value="feminino" required>
-                <label for="feminino">Feminino</label>
-                <br>
-                <input type="radio" name="genero" id="masculino" value="masculino" required>
-                <label for="masculino">Masculino</label>
-                <br><br>
-                <label for="data_nascimento"><b>Data de Nascimento:</b></label>
-                <input type="date" name="data_nascimento" id="data_nascimento" required>
-                <br><br><br>
-                <div class="inputBox">
-                    <input type="text" name="cidade" id="cidade" class="inputUser" required>
-                    <label for="cidade" class="labelInput">Cidade</label>
-                </div>
-                <br><br>
-                <div class="inputBox">
-                    <input type="text" name="estado" id="estado" class="inputUser" required>
-                    <label for="estado" class="labelInput">Estado</label>
-                </div>
-                <br><br>
-                <div class="inputBox">
-                    <input type="text" name="endereco" id="endereco" class="inputUser" required>
-                    <label for="endereco" class="labelInput">Endereço</label>
-                </div>
-                <br><br>
-                <input type="submit" name="submit" id="submit">
-            </fieldset>
-        </form>
+            </div>
+        </div>
     </div>
-    
 </body>
+
 </html>
