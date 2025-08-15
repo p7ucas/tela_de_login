@@ -49,7 +49,7 @@
         <form action="_testLogin.php"method="POST">
             <input type="text" name="cpf" placeholder="CPF">
             <br><br>
-            <input type="text" name="senha" placeholder="Senha">
+            <input type="password" name="senha" placeholder="Senha">
             <br><br>
             <input class="inputSubmit" type="submit" name="submit" value="Enviar">
         </form>
