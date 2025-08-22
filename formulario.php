@@ -1,3 +1,5 @@
+
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,7 +30,13 @@
                         <h3 class="fw-bold">Formulário de Clientes</h3>
                     </div>
                     <div class="card-body p-4">
-                        <form action="formulario.php" method="POST">
+                        <?php
+                        if (isset($_SESSION['error'])) {
+                            echo '<div class="alert alert-danger text-center">' . $_SESSION['error'] . '</div>';
+                            unset($_SESSION['error']);
+                        }
+                        ?>
+                        <form action="_formulario.php" method="POST">
                             <div class="mb-3">
                                 <label for="nome" class="form-label">Nome Completo</label>
                                 <input type="text" name="nome" id="nome" class="form-control" required>
@@ -36,7 +44,8 @@
 
                             <div class="mb-3">
                                 <label for="nome" class="form-label">email</label>
-                                <input type="email" name="email" placeholder="exemplo@exemplo.com" id="email" class="form-control" required>
+                                <input type="email" name="email" placeholder="exemplo@exemplo.com" id="email"
+                                    class="form-control" required>
                             </div>
 
                             <div class="mb-3">
@@ -46,7 +55,8 @@
 
                             <div class="mb-3">
                                 <label for="cpf" class="form-label">CPF</label>
-                                <input type="text" name="cpf" placeholder="000.000.000-00" id="cpf" class="form-control" maxlength="14" required>
+                                <input type="text" name="cpf" placeholder="000.000.000-00" id="cpf" class="form-control"
+                                    maxlength="14" required>
                             </div>
 
                             <div class="mb-3">
@@ -103,6 +113,17 @@
             </div>
         </div>
     </div>
+    <script>
+        const cpfInput = document.getElementById('cpf');
+
+        cpfInput.addEventListener('input', () => {
+            let value = cpfInput.value.replace(/\D/g, '');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            cpfInput.value = value;
+        });
+    </script>
 </body>
 
 </html>

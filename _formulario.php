@@ -1,4 +1,3 @@
-
 <?php
 
 function validaCPF($cpf)
@@ -34,19 +33,31 @@ if (isset($_POST["submit"])) {
         echo "CPF inválido!";
     } else {
 
-        $nome = $_POST["nome"];
-        $email = $_POST["email"];
-        $senha = password_hash($_POST["senha"], PASSWORD_DEFAULT);
-        $telefone = $_POST["telefone"];
-        $sexo = $_POST["genero"];
-        $data_nasc = $_POST["data_nascimento"];
-        $cidade = $_POST["cidade"];
-        $estado = $_POST["estado"];
-        $endereco = $_POST["endereco"];
+        $sql_check = "SELECT * FROM usuarios WHERE cpf = '{$cpf}'";
+        $result_check = $conexao->query($sql_check);
 
-        $result = mysqli_query($conexao, "INSERT INTO usuarios(nome,email,cpf,senha,telefone,sexo,data_nasc,cidade,estado,endereco)
-        VALUES('$nome','$email','$cpf','$senha','$telefone','$sexo','$data_nasc','$cidade','$estado','$endereco')");
+        if (mysqli_num_rows($result_check) > 0) {
+            $_SESSION['error'] = "Este CPF já está cadastrado!";
+            header('Location: formulario.php');
+            exit();
+        } else {
+
+            $nome = $_POST["nome"];
+            $email = $_POST["email"];
+            $senha = password_hash($_POST["senha"], PASSWORD_DEFAULT);
+            $telefone = $_POST["telefone"];
+            $sexo = $_POST["genero"];
+            $data_nasc = $_POST["data_nascimento"];
+            $cidade = $_POST["cidade"];
+            $estado = $_POST["estado"];
+            $endereco = $_POST["endereco"];
+
+            $result = mysqli_query($conexao, "INSERT INTO usuarios(nome,email,cpf,senha,telefone,sexo,data_nasc,cidade,estado,endereco)
+            VALUES('$nome','$email','$cpf','$senha','$telefone','$sexo','$data_nasc','$cidade','$estado','$endereco')");
+
+            header('Location: login.php');
+            exit();
+        }
     }
 }
-
 ?>
