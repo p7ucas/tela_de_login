@@ -35,13 +35,18 @@
                             </div>
 
                             <div class="mb-3">
+                                <label for="nome" class="form-label">email</label>
+                                <input type="email" name="email" placeholder="exemplo@exemplo.com" id="email" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="senha" class="form-label">Senha</label>
                                 <input type="password" name="senha" id="senha" class="form-control" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="cpf" class="form-label">CPF</label>
-                                <input type="text" name="cpf" id="cpf" class="form-control" maxlength="14" required>
+                                <input type="text" name="cpf" placeholder="000.000.000-00" id="cpf" class="form-control" maxlength="14" required>
                             </div>
 
                             <div class="mb-3">

@@ -25,23 +25,6 @@ function validaCPF($cpf)
     return true;
 }
 if (isset($_POST["submit"])) {
-    /*
-    print_r('Nome: '. $_POST['nome']);
-    print_r('<br>');
-    print_r('CPF: '. $_POST['cpf']);
-    print_r('<br>');
-    print_r('Telefone: '. $_POST['telefone']);
-    print_r('<br>');
-    print_r('Sexo: '. $_POST['genero']);
-    print_r('<br>');
-    print_r('Data de nascimento: '. $_POST['data_nascimento']);
-    print_r('<br>');
-    print_r('Cidade: '. $_POST['cidade']);
-    print_r('<br>');
-    print_r('Estado: '. $_POST['estado']);
-    print_r('<br>');
-    print_r('Endereço: '. $_POST['endereco']);
-    */
 
     include_once("_config.php");
 
@@ -52,7 +35,8 @@ if (isset($_POST["submit"])) {
     } else {
 
         $nome = $_POST["nome"];
-        $senha = $_POST["senha"];
+        $email = $_POST["email"];
+        $senha = password_hash($_POST["senha"], PASSWORD_DEFAULT);
         $telefone = $_POST["telefone"];
         $sexo = $_POST["genero"];
         $data_nasc = $_POST["data_nascimento"];
@@ -60,10 +44,9 @@ if (isset($_POST["submit"])) {
         $estado = $_POST["estado"];
         $endereco = $_POST["endereco"];
 
-        $result = mysqli_query($conexao, "INSERT INTO usuarios(nome,cpf,senha,telefone,sexo,data_nasc,cidade,estado,endereco)
-        VALUES('$nome','$cpf','$senha','$telefone','$sexo','$data_nasc','$cidade','$estado','$endereco')");
+        $result = mysqli_query($conexao, "INSERT INTO usuarios(nome,email,cpf,senha,telefone,sexo,data_nasc,cidade,estado,endereco)
+        VALUES('$nome','$email','$cpf','$senha','$telefone','$sexo','$data_nasc','$cidade','$estado','$endereco')");
     }
 }
-
 
 ?>
